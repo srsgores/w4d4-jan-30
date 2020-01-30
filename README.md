@@ -15,6 +15,12 @@ What we'll cover:
 5. CSS Preprocessors (SASS, CSS preset env)
 6. Flexbox responsive patterns (demos)
 
+**Demos!**:
+
+1. [Holy grail layout](https://codepen.io/srsgores/pen/ExazOGW)
+2. [Responsive menu](https://codepen.io/srsgores/pen/vYEwvYV?)
+3. [Responsive thumbnail gallery](https://codepen.io/srsgores/pen/YzPbdpR?)
+
 ## Responsive Design Patterns
 
 Most users expect a `block`-style, vertically-scrolling layout on mobile; **this is the default `display` style of elements**
@@ -111,7 +117,15 @@ Resources:
 **Bottom line**: use CSS grid when you encounter trouble with flexbox or when you can't change your markup (ex. `<dl>` with `<dt>` and `<dd>`s)
 
 ## CSS Preprocessors
+Many options:
+
+* Stylus
+* LESS
+* PostCSS (CssNext/[postcss-preset-env)](https://preset-env.cssdb.org/playground))
+
 SASS is the most popular.
+
+[demo](https://codepen.io/srsgores/pen/ExazOGW?)
 
 ### Nesting
 
@@ -143,23 +157,99 @@ body {
 }
 ```
 
+#### Vanilla CSS Variables
+CSS has custom properties (variables), too, and [they have good support](https://caniuse.com/#feat=css-variables)
+
+```css
+:root {
+	--background-colour: hotpink;
+}
+
+body {
+	background-color: var(--background-colour);
+}
+```
+
 ### Colour Functions
+
+`saturate`, `adjust-hue`, and colour wheel spinning
+
+Use `+` or `-` operators to manipulate colours:
+
+Alright:
+
+```scss
+$bodyBackgroundColour: hotpink;
+$textColour: darken($bodyBackgroundColour, 30%);
+```
+
+Better:
+
+```scss
+$bodyBackgroundColour: hotpink !default;
+$textColour: $bodyBackgroundColour - 30;
+```
+
+[List of colour functions in a blog post](https://thoughtbot.com/blog/controlling-color-with-sass-color-functions)
 
 ### Mixins
 
+Like a function to output groups of values (CSS) all at once:
+
+```css
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+```
+
+Replace with:
+
+```scss
+@mixin appearance($appearance) {
+	appearance: $appearance;
+	-webkit-apperance: $appearance;
+	-moz-apperance: none;
+}
+```
+
+Usage:
+
+
+```scss
+progress {
+	@include appearance(none);
+	// browser styles overridden
+}
+```
+
+[Mixin docs](https://sass-lang.com/documentation/at-rules/mixin)
+
 ### Conditionals
 
+`@if` and `@else`; used with variables
+
 ### Placeholders
+Like mixins, but groups all the parents together when you call them
+
+[Avoid these](https://csswizardry.com/2017/02/code-smells-in-css-revisited/)
 
 ### Partials & `@import`
+Useful for breaking up large files into parts and pieces.
+
+Prefixed with `_` in the file name (`_variables.scss`)
+
+Use caution with these; consider making a new file.
 
 ### Configuration with NodeJS
+
+Within express, use [node-sass middleware](https://github.com/sass/node-sass-middleware)
 
 ## Closing Thoughts
 
 * Avoid frameworks and keep it simple (#1 comment from previous cohorts)
 * Only nest selectors up to two levels -- or [don't nest at all](https://csswizardry.com/2017/02/code-smells-in-css-revisited/)
 * Consider turning mixins into utility classes; avoid `@extends`
+* Consider using vanilla CSS with **no** preprocessor, leveraging CSS custom properties
 * Minimize breakpoints (media queries); reduce them to 2 or 3 (or less)
 * Leverage mentor support; don't hesitate to use CSS grid
 * Write your CSS grid layout in a `@supports(display: grid)`
@@ -172,7 +262,6 @@ Amuse yourself, when possible, with [css humour](https://csshumor.com/)
 * [Avoid `outline: none`](http://www.outlinenone.com/) on your focused form fields or `<a>` tags
 * Use `em` or `rem` when possible, especially in media queries
 * Load your desktop styles in a separate file.  Speed up mobile performance
-
 
 ### Other CSS Code Smells
 
